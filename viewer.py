@@ -10,9 +10,7 @@ import scipy.misc
 from USM import USM
 from LoG import LoG2d
 
-imgs = [r"/home/michaelgm/Desktop/NewViewer/lena.jpg",
-        r"/home/michaelgm/Desktop/NewViewer/carnivora.jpg",
-        r"/home/michaelgm/Desktop/NewViewer/girasol.jpg"]
+imgs = [r"/Users/josemariocarranza/Dropbox/lena.png"]
 
 lambdas = [2, 5, 10]
 
@@ -128,7 +126,7 @@ def channels(x, lambda_):
     u.alpha = nn.Parameter(torch.FloatTensor([lambda_]), requires_grad=True)
     yl = l(x)
     yu = u(x)
-    
+
     x = make_plottable(x)
     yl = make_plottable(yl)
     yu = make_plottable(yu)
@@ -136,7 +134,7 @@ def channels(x, lambda_):
     yl = yl.view(224, 224).detach().numpy()
     yu = yu.view(224, 224).detach().numpy()
     images = [  x.astype(dtype=np.float), yl.astype(dtype=np.float), yu.astype(dtype=np.float) ]
-    
+
     return(yl, yu)
 
 
@@ -197,5 +195,5 @@ def display_images(original_image, images, lambdas):
             img_pos += 1
     plt.show()
 
-color_channels(imgs, lambdas)
 
+color_channels(imgs, lambdas)

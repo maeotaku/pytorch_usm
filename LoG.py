@@ -72,7 +72,7 @@ class LoG2d(nn.Module):
                 self.sigma = torch.FloatTensor([sigma])
             self.kernel = log2d(self.kernel_size, self.sigma, self.cuda)
             self.kernel = self.kernel.view(1, 1, self.kernel_size, self.kernel_size)
-            self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
+            #self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
         self.init_weights()
 
     def init_weights(self):
@@ -80,14 +80,16 @@ class LoG2d(nn.Module):
             self.sigma.data.uniform_(0.0001, 0.9999)
 
     def forward(self, input):
+        batch_size, h, w = input.shape[0],  input.shape[2],  input.shape[3]
         if not self.fixed_coeff:
             self.kernel = log2d(self.kernel_size, self.sigma, self.cuda)
             self.kernel = self.kernel.view(1, 1, self.kernel_size, self.kernel_size)
-            self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
+            #self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
         kernel = self.kernel
         #kernel size is (out_channels, in_channels, h, w)
-        res = conv2d(input, kernel, padding=self.padding, groups=self.out_channels)#, stride=self.stride, padding=self.padding, dilation=self.dilation)
-        return res
+        output = conv2d(input.view(batch_size * self.in_channels, 1, h, w), kernel, padding=self.padding, groups=self.out_channels)#, stride=self.stride, padding=self.padding, dilation=self.dilation)
+        output = output.view(batch_size, self.in_channels, h, w)
+        return output
 
 '''
 #CPU
