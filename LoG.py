@@ -72,7 +72,6 @@ class LoG2d(nn.Module):
                 self.sigma = torch.FloatTensor([sigma])
             self.kernel = log2d(self.kernel_size, self.sigma, self.cuda)
             self.kernel = self.kernel.view(1, 1, self.kernel_size, self.kernel_size)
-            #self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
         self.init_weights()
 
     def init_weights(self):
@@ -84,7 +83,6 @@ class LoG2d(nn.Module):
         if not self.fixed_coeff:
             self.kernel = log2d(self.kernel_size, self.sigma, self.cuda)
             self.kernel = self.kernel.view(1, 1, self.kernel_size, self.kernel_size)
-            #self.kernel = self.kernel.repeat(self.out_channels, 1, 1, 1)
         kernel = self.kernel
         #kernel size is (out_channels, in_channels, h, w)
         output = conv2d(input.view(batch_size * self.in_channels, 1, h, w), kernel, padding=self.padding, groups=self.out_channels)#, stride=self.stride, padding=self.padding, dilation=self.dilation)
