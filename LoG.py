@@ -85,7 +85,7 @@ class LoG2d(nn.Module):
             self.kernel = self.kernel.view(1, 1, self.kernel_size, self.kernel_size)
         kernel = self.kernel
         #kernel size is (out_channels, in_channels, h, w)
-        output = conv2d(input.view(batch_size * self.in_channels, 1, h, w), kernel, padding=self.padding, groups=self.out_channels)#, stride=self.stride, padding=self.padding, dilation=self.dilation)
+        output = conv2d(input.view(batch_size * self.in_channels, 1, h, w), kernel, padding=self.padding, groups=1)#, stride=self.stride, padding=self.padding, dilation=self.dilation)
         output = output.view(batch_size, self.in_channels, h, w)
         return output
 
